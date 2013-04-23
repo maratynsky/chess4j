@@ -1,0 +1,9 @@
+.board.black table tr:nth-child(odd) td:nth-child(even),
+.board.black table tr:nth-child(even) td:nth-child(odd) {
+    background-color: #cf8846;
+}
+
+.board.black table tr:nth-child(odd) td:nth-child(odd),
+.board.black table tr:nth-child(even) td:nth-child(even) {
+    background-color: #ffcd9e;
+}
