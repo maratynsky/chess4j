@@ -1,6 +1,9 @@
 package com.tukhvatullin.chess4j.server;
 
-import com.tukhvatullin.chess4j.game.Game;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
+
 import com.tukhvatullin.chess4j.server.db.DataSource;
 import com.tukhvatullin.chess4j.server.db.RedisDataSource;
 import com.tukhvatullin.chess4j.server.game.ChessSocket;
@@ -10,10 +13,6 @@ import com.tukhvatullin.chess4j.server.security.SessionManager;
 import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
-
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Date: 4/2/13
@@ -25,6 +24,7 @@ public class Server {
     public static void main(String[] args) throws ExecutionException,
             InterruptedException, URISyntaxException {
         DataSource ds = new RedisDataSource("localhost");
+
 
         WebServer webServer = WebServers.createWebServer(8081)
                 .add(new StaticFileHandler(new File(Server.class.getResource("/web/assets").toURI())))

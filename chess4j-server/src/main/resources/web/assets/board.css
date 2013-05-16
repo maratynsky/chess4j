@@ -17,9 +17,6 @@
     border-left: 1px solid #555;
 }
 
-.board table {
-    //border: 1px solid black;
-}
 
 
 .board table td {
@@ -45,7 +42,7 @@
 }
 
 .board span.piece {
-    font-size: 34px;
+    font-size: 33px;
     font-weight: normal;
     cursor: pointer;
     padding:0px;
