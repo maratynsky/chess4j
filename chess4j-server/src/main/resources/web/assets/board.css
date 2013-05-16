@@ -26,6 +26,8 @@
     min-width: 40px;
     text-align: center;
     vertical-align: middle;
+    margin:0px;
+    padding:0px;
 }
 
 
@@ -42,7 +44,12 @@
 }
 
 .board span.piece {
+<<<<<<< HEAD
     font-size: 33px;
+=======
+    font-family: "Times New Roman", Times, serif;
+    font-size: 34px;
+>>>>>>> refs/remotes/origin/master
     font-weight: normal;
     cursor: pointer;
     padding:0px;
