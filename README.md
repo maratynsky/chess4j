@@ -1,3 +1,4 @@
+Author: Marat Tukhvatullin <pokmeptb@gmail.com>
 chess4j
 =======
 
