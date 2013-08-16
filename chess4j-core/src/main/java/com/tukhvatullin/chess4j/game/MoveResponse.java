@@ -9,30 +9,30 @@ import java.util.List;
  */
 public class MoveResponse {
 
-    private Move.Type type;
-    private List<Action> actions;
+  private Move.Type type;
+  private List<Action> actions;
 
-    public static MoveResponse cantMove(){
-        return new MoveResponse(Move.Type.CANTMOVE, null);
+  public static MoveResponse cantMove() {
+    return new MoveResponse(Move.Type.CANTMOVE, null);
+  }
+
+  public MoveResponse(Move.Type type, List<Action> actions) {
+    this.type = type;
+    this.actions = actions;
+  }
+
+  public static MoveResponse kingIsUnderAttack() {
+    return new MoveResponse(Move.Type.KINGISUNDERATTACK, null);
+  }
+
+
+  public static class Action {
+    private String from;
+    private String to;
+
+    public Action(String from, String to) {
+      this.from = from;
+      this.to = to;
     }
-
-    public MoveResponse(Move.Type type, List<Action> actions) {
-        this.type = type;
-        this.actions = actions;
-    }
-
-    public static MoveResponse kingIsUnderAttack() {
-        return new MoveResponse(Move.Type.KINGISUNDERATTACK, null);
-    }
-
-
-    public static class Action {
-        private String from;
-        private String to;
-
-        public Action(String from, String to) {
-            this.from = from;
-            this.to = to;
-        }
-    }
+  }
 }

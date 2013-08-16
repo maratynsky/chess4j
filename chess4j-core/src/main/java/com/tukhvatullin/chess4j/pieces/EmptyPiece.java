@@ -8,13 +8,13 @@ import com.tukhvatullin.chess4j.game.Move;
  * Author: Marat Tukhvatullin pokmeptb@gmail.com
  */
 public class EmptyPiece extends Piece {
-    @Override
-    protected char _code() {
-        return 0;
-    }
+  @Override
+  protected char _code() {
+    return 0;
+  }
 
-    @Override
-    public Move.Type canMove(Move move, Game game, Piece pieceTo) {
-        return null;
-    }
+  @Override
+  public Move.Type canMove(Move move, Game game, Piece pieceTo) {
+    return null;
+  }
 }
