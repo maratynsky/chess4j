@@ -15,4 +15,9 @@ public class AttackResponse extends MoveResponse {
   public Action getAction() {
     return action;
   }
+
+  @Override
+  public String toString() {
+    return super.toString()+" ["+action+"]";
+  }
 }

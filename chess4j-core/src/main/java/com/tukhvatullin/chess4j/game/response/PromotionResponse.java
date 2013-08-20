@@ -15,4 +15,9 @@ public class PromotionResponse extends MoveResponse {
   public Action getAction() {
     return action;
   }
+
+  @Override
+  public String toString() {
+    return super.toString()+" ["+action+"]";
+  }
 }

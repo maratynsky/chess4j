@@ -23,4 +23,9 @@ public class CastlingMoveResponse extends MoveResponse{
   public Action getRookAction() {
     return rookAction;
   }
+
+  @Override
+  public String toString() {
+    return super.toString()+" ["+kingAction+", "+rookAction+"]";
+  }
 }

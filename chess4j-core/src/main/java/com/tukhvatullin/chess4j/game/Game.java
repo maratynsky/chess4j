@@ -95,12 +95,8 @@ public class Game {
     board.commit();
     moves.add(move);
 
-    boolean check = checkCheck();
+    moveResponse.check(checkCheck());
     nextTurn();
-
-    if(check){
-      return new CheckResponse();
-    }
 
     return moveResponse;
   }

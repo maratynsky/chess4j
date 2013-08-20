@@ -21,4 +21,9 @@ public class EnpassantResponse extends MoveResponse{
   public Position getPawn() {
     return pawn;
   }
+
+  @Override
+  public String toString() {
+    return super.toString()+" ["+action+", -"+pawn+"]";
+  }
 }
