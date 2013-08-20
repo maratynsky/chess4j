@@ -1,6 +1,7 @@
 package com.tukhvatullin.chess4j;
 
 import com.tukhvatullin.chess4j.game.Game;
+import com.tukhvatullin.chess4j.game.response.MoveResponse;
 
 /**
  * Date: 4/1/13
@@ -25,7 +26,7 @@ public class Test {
         new Turn("g1h3"),
         new Turn("a3b2"),
         new Turn("e1g1"),
-        new Turn("b2a1"),
+        new Turn("b2a1n"),
         new Turn("a2a3"),
         new Turn("a1b1"),
         new Turn("c2c3"),
@@ -38,8 +39,10 @@ public class Test {
     };
 
     for (Turn turn : turns) {
-      turn.move(game);
-      System.out.println(game.getBoard().toString());
+      System.out.println("try: "+turn);
+      MoveResponse moveResponse = turn.move(game);
+      System.out.println(moveResponse);
+      System.out.println(game.getBoard());
     }
   }
 
@@ -48,16 +51,26 @@ public class Test {
     int rf;
     char ct;
     int rt;
+    char p;
 
     public Turn(String notation) {
       cf = notation.charAt(0);
       rf = notation.charAt(1) - '1' + 1;
       ct = notation.charAt(2);
       rt = notation.charAt(3) - '1' + 1;
+      if(notation.length()==5){
+        p = notation.charAt(4);
+      }
     }
 
-    public void move(Game game) {
-      game.move(cf, rf, ct, rt);
+    @Override
+    public String toString() {
+      return new StringBuilder().append(cf).append(rf).append(ct).append(rt).toString();
+    }
+
+    public MoveResponse move(Game game) {
+
+      return game.move(cf, rf, ct, rt, p);
     }
   }
 }

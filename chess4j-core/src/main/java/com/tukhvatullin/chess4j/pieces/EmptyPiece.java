@@ -2,6 +2,7 @@ package com.tukhvatullin.chess4j.pieces;
 
 import com.tukhvatullin.chess4j.game.Game;
 import com.tukhvatullin.chess4j.game.Move;
+import com.tukhvatullin.chess4j.game.response.MoveResponse;
 
 /**
  * Date: 4/2/13
@@ -14,7 +15,7 @@ public class EmptyPiece extends Piece {
   }
 
   @Override
-  public Move.Type canMove(Move move, Game game, Piece pieceTo) {
+  public MoveResponse canMove(Move move, Game game, Piece pieceTo) {
     return null;
   }
 }

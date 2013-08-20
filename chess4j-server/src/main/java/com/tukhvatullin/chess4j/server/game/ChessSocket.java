@@ -1,13 +1,11 @@
 package com.tukhvatullin.chess4j.server.game;
 
 import com.google.gson.Gson;
-import com.tukhvatullin.chess4j.game.Game;
-import com.tukhvatullin.chess4j.game.MoveResponse;
+import com.tukhvatullin.chess4j.game.response.MoveResponse;
 import com.tukhvatullin.chess4j.server.security.Session;
 import com.tukhvatullin.chess4j.server.security.User;
 import org.webbitserver.BaseWebSocketHandler;
 import org.webbitserver.WebSocketConnection;
-import org.webbitserver.WebSocketHandler;
 
 /**
  * Date: 4/3/13

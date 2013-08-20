@@ -122,7 +122,7 @@ public class Board {
       for (char col = 'a'; col <= 'h'; col++) {
         Piece piece = get(col, row);
         sb.append(piece == null ? ((col + row) % 2 == 1 ? '.' : '.') :
-            piece.code());
+            piece.unicode());
       }
       sb.append('\n');
     }

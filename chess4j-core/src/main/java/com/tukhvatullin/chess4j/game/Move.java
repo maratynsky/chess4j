@@ -57,7 +57,9 @@ public class Move {
     PROMOTION,
     ENPASSANT,
     CANTMOVE,
-    KINGISUNDERATTACK
+    KINGISUNDERATTACK,
+    CHECK,
+    CHECKMATE
   }
 
   @Override

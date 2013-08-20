@@ -3,8 +3,8 @@ package com.tukhvatullin.chess4j.game;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.tukhvatullin.chess4j.pieces.Piece;
-import com.tukhvatullin.chess4j.pieces.Queen;
+import com.tukhvatullin.chess4j.game.response.*;
+import com.tukhvatullin.chess4j.pieces.*;
 
 /**
  * Date: 4/1/13
@@ -15,7 +15,6 @@ public class Game {
   private Board board;
   private List<Move> moves;
   private Piece.Color turn;
-  private List<MoveResponse.Action> actions;
 
 
   public Game() {
@@ -33,107 +32,143 @@ public class Game {
   }
 
   public final MoveResponse move(char colFrom, int rowFrom,
-                                 char colTo, int rowTo) {
+                                 char colTo, int rowTo){
+    return move(colFrom, rowFrom, colTo, rowTo, null);
+  }
+
+  public final MoveResponse move(char colFrom, int rowFrom,
+                                 char colTo, int rowTo,
+                                 Character promotionPiece) {
 
     if (colFrom < 'a' || colFrom > 'h' || rowFrom < 1 || rowFrom > 8 ||
         colTo < 'a' || colTo > 'h' || rowTo < 1 || rowTo > 8 ||
         colFrom == colTo && rowFrom == rowTo) {
-      return MoveResponse.cantMove();
+      return new CantMoveResponse();
     }
 
     Piece pieceFrom = board.get(colFrom, rowFrom);
 
     if (pieceFrom == null) {
-      return MoveResponse.cantMove();
+      return new CantMoveResponse();
     }
 
     if (!pieceFrom.color().equals(turn)) {
-      return MoveResponse.cantMove();
+      return new CantMoveResponse();
     }
 
     Piece pieceTo = board.get(colTo, rowTo);
 
     if (pieceTo != null && pieceFrom.color().equals(pieceTo.color())) {
-      return MoveResponse.cantMove();
+      return new CantMoveResponse();
     }
 
-    actions = new LinkedList<MoveResponse.Action>();
 
     Move move = new Move(pieceFrom.code(), colFrom, rowFrom, colTo, rowTo);
 
-    Move.Type moveType = pieceFrom.canMove(move, this, pieceTo);
+    MoveResponse moveResponse = pieceFrom.canMove(move, this, pieceTo);
+    Move.Type moveType = moveResponse.getMoveType();
 
 
     if (moveType.equals(Move.Type.CANTMOVE)) {
-      System.out.println(move + " " + moveType);
-      return MoveResponse.cantMove();
+      return moveResponse;
     }
 
     board.start();
-
-
-    switch (moveType) {
-      case MOVENMENT:
-      case ATTACK:
-      case CASTLING:
-      case ENPASSANT:
-        applyMove(move);
-        break;
-      case PROMOTION:
-        applyMove(move);
-        promotion(move.getColTo(), move.getRowTo());
-        break;
-    }
+    doTurn(move, moveResponse, promotionPiece);
 
     if (turn.equals(Piece.Color.WHITE)) {
       if (Piece.underAttack(Piece.Color.WHITE, board.getWhiteKing().getCol(),
           board.getWhiteKing().getRow(), this)) {
-        moveType = Move.Type.KINGISUNDERATTACK;
         board.rollback();
+        return new KingIsUnderAttackResponse();
       }
     }
     else if (turn.equals(Piece.Color.BLACK)) {
       if (Piece.underAttack(Piece.Color.BLACK, board.getBlackKing().getCol(),
           board.getBlackKing().getRow(), this)) {
-        moveType = Move.Type.KINGISUNDERATTACK;
         board.rollback();
+        return new KingIsUnderAttackResponse();
       }
     }
 
-    System.out.println(move + " " + moveType);
-    if (moveType.equals(Move.Type.KINGISUNDERATTACK)) {
-      return MoveResponse.kingIsUnderAttack();
-    }
 
     board.commit();
     moves.add(move);
+
+    boolean check = checkCheck();
     nextTurn();
 
-    return new MoveResponse(moveType, actions);
+    if(check){
+      return new CheckResponse();
+    }
 
-
+    return moveResponse;
   }
 
-  public void promotion(char colTo, int rowTo) {
-    board.set(colTo, rowTo, new Queen().color(turn));
+  private void doTurn(Move move, MoveResponse response, Character promotionPiece) {
+    switch (response.getMoveType()) {
+      case MOVENMENT:
+      case ATTACK:
+        applyMove(move);
+        break;
+      case CASTLING:
+        applyMove(move);
+        CastlingMoveResponse castling = (CastlingMoveResponse) response;
+        castling(castling.getRookAction().getFrom().getCol(),
+            castling.getRookAction().getFrom().getRow(),
+            castling.getRookAction().getTo().getCol(),
+            castling.getRookAction().getTo().getRow());
+        break;
+      case ENPASSANT:
+        applyMove(move);
+        EnpassantResponse enpassant = (EnpassantResponse) response;
+        enpassant(enpassant.getPawn().getCol(), enpassant.getPawn().getRow());
+        break;
+      case PROMOTION:
+        applyMove(move);
+        PromotionResponse promotion = (PromotionResponse) response;
+        promotion(move.getColTo(), move.getRowTo(), promotionPiece);
+        break;
+    }
   }
 
-  public void castling(char rookCode, char rookColFrom,
-                       int rookRowFrom, char rookColTo, int rookRowTo) {
-    board.move(new Move(rookCode, rookColFrom, rookRowFrom,
+  private void promotion(char colTo, int rowTo, Character promotionPiece) {
+    Piece promotion = null;
+    if(promotionPiece != null){
+      switch (Character.toLowerCase(promotionPiece)){
+        case 'n':
+          promotion = new Knight().color(turn);
+          break;
+        case 'b':
+          promotion = new Bishop().color(turn);
+          break;
+        case 'r':
+          promotion = new Rook().color(turn);
+          break;
+        case 'q':
+        default:
+          promotion = new Queen().color(turn);
+          break;
+      }
+    }else{
+      promotion = new Queen().color(turn);
+    }
+
+    board.set(colTo, rowTo, promotion);
+  }
+
+  private void castling(char rookColFrom,
+                        int rookRowFrom, char rookColTo, int rookRowTo) {
+    board.move(new Move('?', rookColFrom, rookRowFrom,
         rookColTo, rookRowTo));
-    actions.add(new MoveResponse.Action(rookColFrom + "" + rookRowFrom,
-        rookColTo + "" + rookRowTo));
   }
 
   private final void applyMove(Move move) {
     board.move(move);
-    actions.add(new MoveResponse.Action(move.getFrom(), move.getTo()));
   }
 
-  public void enpassant(char col, int row) {
+  private void enpassant(char col, int row) {
     board.set(col, row, null);
-    actions.add(new MoveResponse.Action(null, col + "" + row));
   }
 
   private final void nextTurn() {
@@ -149,8 +184,21 @@ public class Game {
     return moves.get(moves.size() - 1);
   }
 
-  public void checkCheck() {
-
+  public boolean checkCheck() {
+    if (turn.equals(Piece.Color.WHITE)) {
+      if (Piece.underAttack(Piece.Color.BLACK, board.getBlackKing().getCol(),
+          board.getBlackKing().getRow(), this)) {
+        return true;
+      }
+    }
+    else if (turn.equals(Piece.Color.BLACK)) {
+      if (Piece.underAttack(Piece.Color.WHITE, board.getWhiteKing().getCol(),
+          board.getWhiteKing().getRow(), this)) {
+        board.rollback();
+        return true;
+      }
+    }
+    return false;
   }
 
   public Piece.Color getTurn() {

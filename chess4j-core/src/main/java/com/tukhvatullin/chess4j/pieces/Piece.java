@@ -2,6 +2,7 @@ package com.tukhvatullin.chess4j.pieces;
 
 import com.tukhvatullin.chess4j.game.Game;
 import com.tukhvatullin.chess4j.game.Move;
+import com.tukhvatullin.chess4j.game.response.MoveResponse;
 
 /**
  * Date: 3/30/13
@@ -19,7 +20,7 @@ public abstract class Piece {
         Piece piece = game.getBoard().get(col, row);
         if (piece != null && !piece.color().equals(color)) {
           Move move = new Move(piece.code(), col, row, colTo, rowTo);
-          Move.Type moveType = piece.canMove(move, game, new EmptyPiece());
+          Move.Type moveType = piece.canMove(move, game, new EmptyPiece()).getMoveType();
           if (moveType.equals(Move.Type.ATTACK) ||
               moveType.equals(Move.Type.MOVENMENT) ||
               moveType.equals(Move.Type.PROMOTION) ||
@@ -90,7 +91,7 @@ public abstract class Piece {
     return '?';
   }
 
-  public abstract Move.Type canMove(Move move, Game game, Piece pieceTo);
+  public abstract MoveResponse canMove(Move move, Game game, Piece pieceTo);
 
   public char code() {
     return color.equals(Color.WHITE) ?

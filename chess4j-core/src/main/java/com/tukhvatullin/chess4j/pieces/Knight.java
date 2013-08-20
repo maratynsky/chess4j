@@ -2,6 +2,7 @@ package com.tukhvatullin.chess4j.pieces;
 
 import com.tukhvatullin.chess4j.game.Game;
 import com.tukhvatullin.chess4j.game.Move;
+import com.tukhvatullin.chess4j.game.response.*;
 
 /**
  * Date: 4/1/13
@@ -14,23 +15,23 @@ public class Knight extends Piece {
   }
 
   @Override
-  public Move.Type canMove(Move move, Game game, Piece pieceTo) {
+  public MoveResponse canMove(Move move, Game game, Piece pieceTo) {
     int drow = Math.abs(move.getRowTo() - move.getRowFrom());
     int dcol = Math.abs(move.getColTo() - move.getColFrom());
 
     if (Math.max(drow, dcol) > 2) {
-      return Move.Type.CANTMOVE;
+      return new CantMoveResponse();
     }
 
     if (drow + dcol != 3) {
-      return Move.Type.CANTMOVE;
+      return new CantMoveResponse();
     }
 
     if (pieceTo == null) {
-      return Move.Type.MOVENMENT;
+      return new MovenmentResponse(new Action(move));
     }
     else {
-      return Move.Type.ATTACK;
+      return new AttackResponse(new Action(move));
     }
   }
 }
