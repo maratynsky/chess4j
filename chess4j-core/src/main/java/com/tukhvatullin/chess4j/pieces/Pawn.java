@@ -1,5 +1,8 @@
 package com.tukhvatullin.chess4j.pieces;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.tukhvatullin.chess4j.game.Game;
 import com.tukhvatullin.chess4j.game.Move;
 import com.tukhvatullin.chess4j.game.response.*;
@@ -108,5 +111,38 @@ public class Pawn extends Piece {
     }
 
 
+  }
+
+  @Override
+  public List<Move> moves(char col, int row, Game game) {
+    List<Move> moves = new LinkedList<Move>();
+    char pieceCode = _code();
+
+    if (color().equals(Color.WHITE)) {
+      if (row == 2) {
+        moves.add(new Move(pieceCode, col, row, col, row + 2));
+      }
+      if (row < 8) {
+        moves.add(new Move(pieceCode, col, row, col, row + 1));
+        if (col > 'a')
+          moves.add(new Move(pieceCode, (char) (col - 1), row, col, row + 1));
+        if (col < 'h')
+          moves.add(new Move(pieceCode, col, row, (char) (col + 1), row + 1));
+      }
+    }
+    else if (color().equals(Color.BLACK)) {
+      if (row == 7) {
+        moves.add(new Move(pieceCode, col, row, col, row - 2));
+      }
+      if (row < 8) {
+        moves.add(new Move(pieceCode, col, row, col, row - 1));
+        if (col > 'a')
+          moves.add(new Move(pieceCode, (char) (col - 1), row, col, row - 1));
+        if (col < 'h')
+          moves.add(new Move(pieceCode, col, row, (char) (col + 1), row - 1));
+      }
+    }
+
+    return moves;
   }
 }

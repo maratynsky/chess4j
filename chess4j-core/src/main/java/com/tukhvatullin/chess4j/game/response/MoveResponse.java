@@ -11,6 +11,7 @@ public class MoveResponse {
 
   protected Move.Type type;
   protected boolean check = false;
+  protected boolean checkmate = false;
 
   public MoveResponse(Move.Type type) {
     this.type = type;
@@ -22,7 +23,7 @@ public class MoveResponse {
 
   @Override
   public String toString() {
-    return type.toString() + (check?" (CHECK)":"");
+    return type.toString() + (checkmate?" (CHECKMATE)":(check?" (CHECK)":""));
   }
 
   public MoveResponse check(boolean check){
@@ -32,5 +33,14 @@ public class MoveResponse {
 
   public boolean isCheck() {
     return check;
+  }
+
+  public MoveResponse checkmate(boolean checkmate) {
+    this.checkmate = checkmate;
+    return this;
+  }
+
+  public boolean isCheckmate() {
+    return checkmate;
   }
 }

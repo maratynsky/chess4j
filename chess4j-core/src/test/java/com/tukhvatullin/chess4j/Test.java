@@ -34,7 +34,13 @@ public class Test {
         new Turn("c3c4"),
         new Turn("f8e7"),
         new Turn("d6d7"),
-        new Turn("h8g8"),
+        new Turn("c8d7"),
+        new Turn("d3c4"),
+        new Turn("e6e5"),
+        new Turn("a3a4"),
+        new Turn("h6g4"),
+
+        new Turn("h5f7"),
 
     };
 

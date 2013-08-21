@@ -1,5 +1,8 @@
 package com.tukhvatullin.chess4j.pieces;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.tukhvatullin.chess4j.game.Game;
 import com.tukhvatullin.chess4j.game.Move;
 import com.tukhvatullin.chess4j.game.response.*;
@@ -47,5 +50,28 @@ public class Rook extends Piece {
     else {
       return new AttackResponse(new Action(move));
     }
+  }
+
+  @Override
+  public List<Move> moves(char col, int row, Game game) {
+    List<Move> moves = new LinkedList<Move>();
+    char pieceCode = _code();
+
+
+    for (char c = 'a'; c <= 'h'; c++) {
+      if (c == col) {
+        continue;
+      }
+      moves.add(new Move(pieceCode, col, row, c, row));
+    }
+
+    for (int r = 1; r <= 8; r++) {
+      if (r == row) {
+        continue;
+      }
+      moves.add(new Move(pieceCode, col, row, col, r));
+    }
+
+    return moves;
   }
 }

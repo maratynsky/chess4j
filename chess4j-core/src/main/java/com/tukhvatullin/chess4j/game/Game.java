@@ -32,7 +32,7 @@ public class Game {
   }
 
   public final MoveResponse move(char colFrom, int rowFrom,
-                                 char colTo, int rowTo){
+                                 char colTo, int rowTo) {
     return move(colFrom, rowFrom, colTo, rowTo, null);
   }
 
@@ -76,32 +76,29 @@ public class Game {
     board.start();
     doTurn(move, moveResponse, promotionPiece);
 
-    if (turn.equals(Piece.Color.WHITE)) {
-      if (Piece.underAttack(Piece.Color.WHITE, board.getWhiteKing().getCol(),
-          board.getWhiteKing().getRow(), this)) {
-        board.rollback();
-        return new KingIsUnderAttackResponse();
-      }
+    King king = turn.equals(Piece.Color.WHITE) ?
+        board.getWhiteKing() : board.getBlackKing();
+    if (Piece.underAttack(king.color(), king.getCol(),
+        king.getRow(), this)) {
+      board.rollback();
+      return new KingIsUnderAttackResponse();
     }
-    else if (turn.equals(Piece.Color.BLACK)) {
-      if (Piece.underAttack(Piece.Color.BLACK, board.getBlackKing().getCol(),
-          board.getBlackKing().getRow(), this)) {
-        board.rollback();
-        return new KingIsUnderAttackResponse();
-      }
-    }
-
 
     board.commit();
     moves.add(move);
 
-    moveResponse.check(checkCheck());
+    boolean check = checkCheck();
+    moveResponse.check(check);
+    if (check) {
+      moveResponse.checkmate(checkCheckmate());
+    }
     nextTurn();
 
     return moveResponse;
   }
 
-  private void doTurn(Move move, MoveResponse response, Character promotionPiece) {
+  private void doTurn(Move move, MoveResponse response,
+                      Character promotionPiece) {
     switch (response.getMoveType()) {
       case MOVENMENT:
       case ATTACK:
@@ -129,9 +126,9 @@ public class Game {
   }
 
   private void promotion(char colTo, int rowTo, Character promotionPiece) {
-    Piece promotion = null;
-    if(promotionPiece != null){
-      switch (Character.toLowerCase(promotionPiece)){
+    Piece promotion;
+    if (promotionPiece != null) {
+      switch (Character.toLowerCase(promotionPiece)) {
         case 'n':
           promotion = new Knight().color(turn);
           break;
@@ -146,7 +143,8 @@ public class Game {
           promotion = new Queen().color(turn);
           break;
       }
-    }else{
+    }
+    else {
       promotion = new Queen().color(turn);
     }
 
@@ -181,20 +179,43 @@ public class Game {
   }
 
   public boolean checkCheck() {
-    if (turn.equals(Piece.Color.WHITE)) {
-      if (Piece.underAttack(Piece.Color.BLACK, board.getBlackKing().getCol(),
-          board.getBlackKing().getRow(), this)) {
-        return true;
-      }
-    }
-    else if (turn.equals(Piece.Color.BLACK)) {
-      if (Piece.underAttack(Piece.Color.WHITE, board.getWhiteKing().getCol(),
-          board.getWhiteKing().getRow(), this)) {
-        board.rollback();
-        return true;
-      }
+    King king = turn.equals(Piece.Color.WHITE) ?
+        board.getBlackKing() : board.getWhiteKing();
+    if (Piece.underAttack(king.color(), king.getCol(),
+        king.getRow(), this)) {
+      board.rollback();
+      return true;
     }
     return false;
+  }
+
+  public boolean checkCheckmate() {
+    King king = turn.equals(Piece.Color.WHITE) ?
+        board.getBlackKing() : board.getWhiteKing();
+    Piece.Color color = king.color();
+    for (char col = 'a'; col <= 'h'; col++) {
+      for (int row = 1; row <= 8; row++) {
+        Piece piece = board.get(col, row);
+        if (piece != null && piece.color().equals(color)) {
+          List<Move> moves = piece.moves(col, row, this);
+          for (Move move : moves) {
+            MoveResponse response = piece.canMove(move, this,
+                board.get(move.getColTo(), move.getRowTo()));
+            board.start();
+            doTurn(move, response, null);
+
+            if (!Piece.underAttack(king.color(), king.getCol(),
+                king.getRow(), this)) {
+              board.rollback();
+              return false;
+            }
+
+            board.rollback();
+          }
+        }
+      }
+    }
+    return true;
   }
 
   public Piece.Color getTurn() {

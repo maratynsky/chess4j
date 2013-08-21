@@ -1,6 +1,7 @@
 package com.tukhvatullin.chess4j.server.game;
 
 import com.google.gson.Gson;
+import com.tukhvatullin.chess4j.game.response.CantMoveResponse;
 import com.tukhvatullin.chess4j.game.response.MoveResponse;
 import com.tukhvatullin.chess4j.server.security.Session;
 import com.tukhvatullin.chess4j.server.security.User;
@@ -53,7 +54,7 @@ public class ChessSocket extends BaseWebSocketHandler{
             User user = user(connection);
             TheGame game = user.getGame();
             if(!game.getGame().getTurn().equals(game.color(user))){
-                connection.send(gson.toJson(MoveResponse.cantMove()));
+                connection.send(gson.toJson(new CantMoveResponse()));
             }else{
                 MoveResponse response = game.getGame().move(cf, rf, ct, rt);
                 game.getWhite().getConnection().send(gson.toJson(response));
