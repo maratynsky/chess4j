@@ -19,6 +19,11 @@ public class Knight extends Piece {
 
   @Override
   public MoveResponse canMove(Move move, Game game, Piece pieceTo) {
+
+    if(pieceTo != null && color().equals(pieceTo.color())){
+      return new CantMoveResponse();
+    }
+
     int drow = Math.abs(move.getRowTo() - move.getRowFrom());
     int dcol = Math.abs(move.getColTo() - move.getColFrom());
 

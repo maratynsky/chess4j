@@ -57,9 +57,7 @@ public class Move {
     PROMOTION,
     ENPASSANT,
     CANTMOVE,
-    KINGISUNDERATTACK,
-    CHECK,
-    CHECKMATE
+    KINGISUNDERATTACK
   }
 
   @Override
@@ -67,6 +65,5 @@ public class Move {
     return new StringBuilder().append(pieceCode)
         .append(colFrom).append(rowFrom)
         .append(colTo).append(rowTo).toString();
-
   }
 }

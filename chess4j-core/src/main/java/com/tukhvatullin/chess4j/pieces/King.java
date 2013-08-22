@@ -39,6 +39,11 @@ public class King extends Piece {
 
   @Override
   public MoveResponse canMove(Move move, Game game, Piece pieceTo) {
+
+    if(pieceTo != null && color().equals(pieceTo.color())){
+      return new CantMoveResponse();
+    }
+
     int drow = move.getRowTo() - move.getRowFrom();
     int dcol = move.getColTo() - move.getColFrom();
 
@@ -47,6 +52,9 @@ public class King extends Piece {
             move.getRowFrom(), game)) {
       char rookCol = dcol < 0 ? 'a' : 'h';
       Piece rook = game.getBoard().get(rookCol, move.getRowFrom());
+      if (rook == null) {
+        return new CantMoveResponse();
+      }
       if (rook.isMoved()) {
         return new CantMoveResponse();
       }

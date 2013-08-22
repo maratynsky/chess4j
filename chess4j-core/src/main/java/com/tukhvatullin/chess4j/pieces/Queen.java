@@ -19,6 +19,11 @@ public class Queen extends Piece {
 
   @Override
   public MoveResponse canMove(Move move, Game game, Piece pieceTo) {
+
+    if(pieceTo != null && color().equals(pieceTo.color())){
+      return new CantMoveResponse();
+    }
+
     int drow = move.getRowTo() - move.getRowFrom();
     int dcol = move.getColTo() - move.getColFrom();
     //diagonal

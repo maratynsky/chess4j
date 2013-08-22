@@ -20,6 +20,11 @@ public class Pawn extends Piece {
 
   @Override
   public MoveResponse canMove(Move move, Game game, Piece pieceTo) {
+
+    if(pieceTo != null && color().equals(pieceTo.color())){
+      return new CantMoveResponse();
+    }
+
     //todo check king is under attack after move
     if (move.getColFrom() == move.getColTo()) {
       if (pieceTo != null) {

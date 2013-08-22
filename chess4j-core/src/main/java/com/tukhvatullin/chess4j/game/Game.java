@@ -120,6 +120,7 @@ public class Game {
       case PROMOTION:
         applyMove(move);
         PromotionResponse promotion = (PromotionResponse) response;
+        promotion.setPiece(promotionPiece);
         promotion(move.getColTo(), move.getRowTo(), promotionPiece);
         break;
     }
