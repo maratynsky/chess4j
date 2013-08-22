@@ -130,7 +130,7 @@ public class Pawn extends Piece {
       if (row < 8) {
         moves.add(new Move(pieceCode, col, row, col, row + 1));
         if (col > 'a')
-          moves.add(new Move(pieceCode, (char) (col - 1), row, col, row + 1));
+          moves.add(new Move(pieceCode, col, row, (char) (col - 1), row + 1));
         if (col < 'h')
           moves.add(new Move(pieceCode, col, row, (char) (col + 1), row + 1));
       }
@@ -142,7 +142,7 @@ public class Pawn extends Piece {
       if (row < 8) {
         moves.add(new Move(pieceCode, col, row, col, row - 1));
         if (col > 'a')
-          moves.add(new Move(pieceCode, (char) (col - 1), row, col, row - 1));
+          moves.add(new Move(pieceCode, col, row, (char) (col - 1), row - 1));
         if (col < 'h')
           moves.add(new Move(pieceCode, col, row, (char) (col + 1), row - 1));
       }
