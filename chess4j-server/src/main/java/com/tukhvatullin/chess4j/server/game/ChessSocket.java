@@ -53,7 +53,9 @@ public class ChessSocket extends BaseWebSocketHandler {
       User user = user(connection);
       TheGame game = user.getGame();
 
-      if(!game.getGame().getTurn().equals(game.color(user))){
+      if(!game.isFull()){
+        connection.send(gson.toJson(new CantMoveResponse()));
+      }else if(!game.getGame().getTurn().equals(game.color(user))){
         connection.send(gson.toJson(new CantMoveResponse()));
       }else{
         MoveResponse response = game.getGame().move(cf, rf, ct, rt);

@@ -1,10 +1,10 @@
 package com.tukhvatullin.chess4j.server.game;
 
+import java.util.Date;
+
 import com.tukhvatullin.chess4j.game.Game;
 import com.tukhvatullin.chess4j.pieces.Piece;
 import com.tukhvatullin.chess4j.server.security.User;
-
-import java.util.Date;
 
 /**
  * Date: 4/5/13
@@ -69,7 +69,7 @@ public class TheGame {
     }
 
     public boolean isFull() {
-        return black != null;
+        return black != null && white!=null;
     }
 
     public User opponent(User user) {

@@ -1,3 +1,48 @@
-.lobster{
+.lobster {
     font-family: 'Lobster', cursive;
+}
+
+body{
+}
+
+#game-field{
+    margin-top:-20px;
+}
+
+#game-field, .logo{
+    margin-left: auto;
+    margin-right: auto;
+    width:362px;
+}
+
+div.username{
+    text-align: right;
+    color:#555;
+    font-family:helvetica;
+    margin-right:25px;
+    font-family: 'Lobster', cursive;
+}
+
+.logo{
+    padding-left:40px;
+    /*position: fixed;*/
+    font-weight: bold;
+    font-size: 36px;
+    color: #b2733f;
+}
+
+#menu{
+    opacity:0.1;
+
+}
+
+#menu:hover{
+    opacity:0.2;
+}
+
+.footer{
+    margin-top:-20px;
+    margin-left:25px;
+    color:#888;
+    font-size: 12px;
 }
