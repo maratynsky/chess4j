@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>Chess</title>
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="../assets/chess.css">
+    <link rel="stylesheet" href="../assets/board.css">
+    <link rel="stylesheet" href="../assets/board_white.css">
+    <link rel="stylesheet" href="../assets/board_black.css">
+</head>
+<body>
+<div class="logo lobster">chess <a href="#" id="menu"><img
+        src="../assets/img/menu.png"></a></div>
+
+<div id="start-form">
+    <form action="/start.do" method="post">
+
+        <input type="radio" name="color" value="white">white
+        <input type="radio" name="color" value="black">black
+        <!--<input type="radio" name="color" value="?">anyway-->
+        <select name="level">
+            <option value="pawn">&#9823;</option>
+            <option value="bishop">&#9821;</option>
+            <option value="knight">&#9822;</option>
+            <option value="rook">&#9820;</option>
+            <option value="queen">&#9819;</option>
+            <option value="king">&#9818;</option>
+        </select>
+        <input type="text" name="username" placeholder="username">
+        <button type="submit" value="start">start</button>
+    </form>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+<script src="../assets/jquery.ui.touch-punch.js"></script>
+<script src="../assets/functions.js"></script>
+<script src="../assets/script.js"></script>
+
+</body>
+</html>
