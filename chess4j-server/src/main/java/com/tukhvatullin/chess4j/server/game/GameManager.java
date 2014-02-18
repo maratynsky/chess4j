@@ -1,5 +1,10 @@
 package com.tukhvatullin.chess4j.server.game;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.tukhvatullin.chess4j.game.Board;
 import com.tukhvatullin.chess4j.game.Game;
@@ -10,11 +15,6 @@ import org.webbitserver.HttpControl;
 import org.webbitserver.HttpHandler;
 import org.webbitserver.HttpRequest;
 import org.webbitserver.HttpResponse;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Date: 4/8/13
@@ -50,6 +50,7 @@ public class GameManager implements HttpHandler {
 
         Map responseMap = new HashMap();
         responseMap.put("color", game.color(user));
+        responseMap.put("turn", game.getGame().getTurn());
         Map<String, Character> map = new HashMap<String, Character>();
 
         Board board = game.getGame().getBoard();

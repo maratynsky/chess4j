@@ -19,11 +19,9 @@ import org.webbitserver.handler.authentication.PasswordAuthenticator;
 public final class SessionManager implements HttpHandler, Runnable {
 
   private Map<String, Session> sessions = new HashMap<String, Session>();
-  private PasswordAuthenticator passwordAuthenticator;
   private int un = 1;
 
   public SessionManager(PasswordAuthenticator passwordAuthenticator) {
-    this.passwordAuthenticator = passwordAuthenticator;
   }
 
   public String generateUsername() {
@@ -34,8 +32,8 @@ public final class SessionManager implements HttpHandler, Runnable {
    * @param username
    * @return generated session id
    */
-  private String authentificate(String username) {
-    User user = new User(username, User.Rank.PAWN);
+  private String authentificate(String username, User.Rank rank) {
+    User user = new User(username, rank);
     Session session = new Session(user);
     String sessionId = UUID.randomUUID().toString();
     sessions.put(sessionId, session);
@@ -50,14 +48,24 @@ public final class SessionManager implements HttpHandler, Runnable {
                                 final HttpControl control) throws Exception {
     String ssid = request.cookieValue("SSID");
     request.data("session", sessions.get(ssid));
-    if (request.uri().equalsIgnoreCase("/start/") ||
-        request.uri().equalsIgnoreCase("/start")) {
+    if (request.uri().toLowerCase().startsWith("/assets")) {
       control.nextHandler();
+    }
+    else if (request.uri().equalsIgnoreCase("/start/") ||
+        request.uri().equalsIgnoreCase("/start")) {
+      if (ssid == null || ssid.isEmpty() || !sessions.containsKey(ssid)) {
+        control.nextHandler();
+      }
+      else {
+        redirectToIndex(response);
+      }
     }
     else if (request.uri().equalsIgnoreCase("/start.do")) {
       if (request.method().equalsIgnoreCase("POST")) {
         final String username = request.postParam("username");
-        String sessionId = authentificate(username);
+        final String level = request.postParam("level");
+        User.Rank rank = User.Rank.valueOf(level.toUpperCase());
+        String sessionId = authentificate(username, rank);
         response.cookie(new HttpCookie("SSID", sessionId));
         redirectToIndex(response);
       }

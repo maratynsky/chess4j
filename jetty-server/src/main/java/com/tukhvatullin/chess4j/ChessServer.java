@@ -1,21 +1,26 @@
 package com.tukhvatullin.chess4j;
 
-import org.eclipse.jetty.websocket.WebSocketHandler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.util.resource.Resource;
 
 /**
  * @author pokmeptb
  */
 public class ChessServer {
   public static void main(String[] args) throws Exception {
-    ChessServer server = new ChessServer(8080);
-    WebSocketHandler wsHandler = new WebSocketHandler() {
-      @Override
-      public void configure(WebSocketServletFactory factory) {
-        factory.register(MyWebSocketHandler.class);
-      }
-    };
-    server.setHandler(wsHandler);
+    Server server = new Server(8080);
+
+    ResourceHandler resourceHandler = new ResourceHandler();
+    resourceHandler.setDirectoriesListed(true);
+    resourceHandler.setWelcomeFiles(new String[]{ "index.html" });
+    resourceHandler.setBaseResource(Resource.newClassPathResource("."));
+
+
+
+    server.setHandler(resourceHandler);
     server.start();
     server.join();
   }
+
 }

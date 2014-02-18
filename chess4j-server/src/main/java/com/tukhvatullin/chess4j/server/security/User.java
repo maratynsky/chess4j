@@ -71,6 +71,15 @@ public class User {
             return null;
         }
 
+      private Rank get(char code) {
+        for (Rank rank : values()) {
+          if (rank.code == code) {
+            return rank;
+          }
+        }
+        return null;
+      }
+
         public char getCode() {
             return code;
         }

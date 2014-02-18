@@ -11,6 +11,7 @@
     <modules>
         <module>chess4j-core</module>
         <module>chess4j-server</module>
+      <module>jetty-server</module>
     </modules>
 
 

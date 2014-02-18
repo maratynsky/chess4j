@@ -9,7 +9,7 @@ body{
     margin-top:-20px;
 }
 
-#game-field, .logo{
+#game-field, .logo, #start-form{
     margin-left: auto;
     margin-right: auto;
     width:362px;
@@ -17,10 +17,19 @@ body{
 
 div.username{
     text-align: right;
-    color:#555;
+    color:#000;
     font-family:helvetica;
-    margin-right:25px;
+    padding-right:20px;
+    margin-right:5px;
     font-family: 'Lobster', cursive;
+    opacity: 0.3;
+    width:50%;
+    margin-left:auto;
+}
+
+.username.turn{
+    background: url(../assets/img/arrow.png) no-repeat right;
+    opacity: 0.6;
 }
 
 .logo{
@@ -29,6 +38,7 @@ div.username{
     font-weight: bold;
     font-size: 36px;
     color: #b2733f;
+    z-index:10;
 }
 
 #menu{
@@ -45,4 +55,36 @@ div.username{
     margin-left:25px;
     color:#888;
     font-size: 12px;
+}
+
+.piece.last-move{
+    /*border-bottom: solid 2px red;*/
+    /*background: url('../assets/img/point.png') center no-repeat;*/
+}
+
+#start-form select, input, button{
+    font-size:24px;
+    border: none;
+    /*//border-bottom: dotted 1px #666;*/
+    color:#666;
+    background:none;
+    font-family: 'Lobster', cursive;
+}
+
+
+
+#start-form input{
+}
+
+.piece {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+
+    /*
+      Introduced in IE 10.
+      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
 }

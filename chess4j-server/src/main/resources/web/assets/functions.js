@@ -7,3 +7,4 @@ function getPiece(p) {
         'p': '&#9823;'};
     return pp[p.toLowerCase()];
 }
+

@@ -1,6 +1,6 @@
 package com.tukhvatullin.chess4j.server.game;
 
-import java.util.Date;
+import java.util.UUID;
 
 import com.tukhvatullin.chess4j.game.Game;
 import com.tukhvatullin.chess4j.pieces.Piece;
@@ -20,7 +20,7 @@ public class TheGame {
 
 
     public TheGame(Type type, Game game, User white) {
-        this.id = Long.toHexString(new Date().getTime());
+        this.id = UUID.randomUUID().toString();
         this.game = game;
         this.type = type;
         this.white = white;
