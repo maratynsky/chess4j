@@ -1,4 +1,3 @@
-Author: Marat Tukhvatullin <pokmeptb@gmail.com>
 chess4j
 =======
 
@@ -14,3 +13,4 @@ MoveResponse response = game.move(move);
 System.out.println(response);
 System.out.println(game);
 ```
+Author: Marat Tukhvatullin <pokmeptb@gmail.com>
